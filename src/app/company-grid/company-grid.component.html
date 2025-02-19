@@ -9,7 +9,7 @@
         <th>Ticker</th>
         <th>ISIN</th>
         <th>Website</th>
-        <th>Actions</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -31,31 +31,38 @@
   <!-- Modal -->
   <ng-template #companyModal let-modal>
     <div class="modal-dialog">
-      <div>
+      <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ isEditMode ? 'Edit Company' : 'Add Company' }}</h5>
         </div>
-        <div class="modal-body">
-          <form>
+        <div>
+          <form [formGroup]="companyForm">
             <div>
               <label for="companyName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="companyName" [(ngModel)]="selectedCompany.name" name="name">
+              <input type="text" class="form-control" id="companyName" formControlName="name">
+              <div *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" class="text-danger">
+                Name is required.
+              </div>
             </div>
             <div>
               <label for="companyExchange" class="form-label">Exchange</label>
-              <input type="text" class="form-control" id="companyExchange" [(ngModel)]="selectedCompany.exchange" name="exchange">
+              <input type="text" class="form-control" id="companyExchange" formControlName="exchange">
             </div>
             <div>
               <label for="companyTicker" class="form-label">Ticker</label>
-              <input type="text" class="form-control" id="companyTicker" [(ngModel)]="selectedCompany.ticker" name="ticker">
+              <input type="text" class="form-control" id="companyTicker" formControlName="ticker">
             </div>
             <div>
               <label for="companyIsin" class="form-label">ISIN</label>
-              <input type="text" class="form-control" id="companyIsin" [(ngModel)]="selectedCompany.isin" name="isin">
+              <input type="text" class="form-control" id="companyIsin" formControlName="isin">
+              <div *ngIf="companyForm.get('isin')?.invalid && companyForm.get('isin')?.touched" class="text-danger">
+                <div *ngIf="companyForm.get('isin')?.errors?.['required']">ISIN is required.</div>
+                <div *ngIf="companyForm.get('isin')?.errors?.['pattern']">The first two characters of an ISIN must be letters / non numeric.</div>
+              </div>
             </div>
             <div>
               <label for="companyWebsite" class="form-label">Website</label>
-              <input type="text" class="form-control" id="companyWebsite" [(ngModel)]="selectedCompany.website" name="website">
+              <input type="text" class="form-control" id="companyWebsite" formControlName="website">
             </div>
           </form>
         </div>
@@ -67,3 +74,4 @@
     </div>
   </ng-template>
 </div>
+
